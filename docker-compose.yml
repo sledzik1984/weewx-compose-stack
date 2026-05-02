@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: Dockerfile.init
     volumes:
-      - weewx_data:/data
+      - /opt/weewx:/data
     environment:
       - PATH=/opt/venv/bin:/usr/local/bin:/usr/bin:/bin
       - PIP_TARGET=/data/lib/python/site-packages
