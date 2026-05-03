@@ -58,7 +58,8 @@ configure_belchertown_options() {
                 /init/weewx_config_api.py remove-section "[StdReport][Belchertown][Extras]"
             fi
             /init/weewx_config_api.py create-section "[StdReport][Belchertown][Extras]"
-            
+
+	                
             # Set Belchertown Extras options (for manifest and site title)
             /init/weewx_config_api.py set-multiple-values "[StdReport][Belchertown][Extras]" \
                 "site_title=$WEEWX_LOCATION" \
@@ -82,6 +83,18 @@ configure_belchertown_options() {
             echo "Warning: [[Belchertown]] section not found, skipping skin configuration"
         fi
     fi
+}
+
+
+
+configure_belchertown_pressure_override() {
+
+	    #If env variable set - configure pressure unit override
+	    if [ -n "$WEEWX_PRESSURE_UNIT" ] then
+	    /init/weewx_config_api.py create-section "[StdReport][Belchertown][Units][Groups]"
+	    /init/weewx_config_api.py set-value "[StdReport][Belchertown][Units][Groups]" "group_pressure" "$WEEWX_PRESSURE_UNIT"
+	    fi
+
 }
 
 # Map language code to proper locale string for Belchertown
@@ -153,6 +166,7 @@ configure_default_skin
 configure_belchertown_options
 configure_belchertown_locale
 configure_belchertown_timezone
+configure_belchertown_pressure_override
 
 # Validate final configuration
 log_info "Validating final configuration..."
