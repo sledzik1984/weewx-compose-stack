@@ -62,6 +62,18 @@ if [ -n "$WEEWX_LANGUAGE" ] && [ "$WEEWX_LANGUAGE" != "en" ]; then
     /init/weewx_config_api.py set-value "[StdReport][Defaults]" "lang" "$WEEWX_LANGUAGE"
 fi
 
+# If env variable for custom pressure unit set - apply config
+if [ -n "$WEEWX_PRESSURE_UNIT" ]; then
+
+    echo "Removing [StdReport][Defaults][Units][Groups]"
+    /init/weewx_config_api.py remove-section "[StdReport][Defaults][Units][Groups]"
+    echo "Recreating clean [StdReport][Defaults][Units][Groups]"
+    /init/weewx_config_api.py create-section "[StdReport][Defaults][Units][Groups]"
+    echo "Applying custom pressure unit: $WEEWX_PRESSURE_UNIT"
+    /init/weewx_config_api.py set-value "[StdReport][Defaults][Units][Groups]" "unused" "unused"
+    /init/weewx_config_api.py set-value "[StdReport][Defaults][Units][Groups]" "group_pressure" "$WEEWX_PRESSURE_UNIT"
+fi
+
 # Handle station_url (ConfigObj handles both commented and uncommented cases)
 if [ -n "$WEEWX_STATION_URL" ]; then
     echo "Setting station URL: $WEEWX_STATION_URL"
