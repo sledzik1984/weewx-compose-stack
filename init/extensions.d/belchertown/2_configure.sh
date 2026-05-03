@@ -88,9 +88,10 @@ configure_belchertown_options() {
 
 
 configure_belchertown_pressure_override() {
-
+	    log_info "Check if WEEWX_PRESSURE UNIT env variable is set..."
 	    #If env variable set - configure pressure unit override
 	    if [ -n "$WEEWX_PRESSURE_UNIT" ]; then
+	    log_info "WEEWX_PRESSURE_UNIT set - applying configuration."
 	    /init/weewx_config_api.py create-section "[StdReport][Belchertown][Units][Groups]"
 	    /init/weewx_config_api.py set-value "[StdReport][Belchertown][Units][Groups]" "group_pressure" "$WEEWX_PRESSURE_UNIT"
 	    fi
