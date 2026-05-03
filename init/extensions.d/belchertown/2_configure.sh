@@ -85,19 +85,6 @@ configure_belchertown_options() {
     fi
 }
 
-
-
-configure_belchertown_pressure_override() {
-	    log_info "Check if WEEWX_PRESSURE UNIT env variable is set..."
-	    #If env variable set - configure pressure unit override
-	    if [ -n "$WEEWX_PRESSURE_UNIT" ]; then
-	    log_info "WEEWX_PRESSURE_UNIT set - applying configuration."
-	    /init/weewx_config_api.py create-section "[StdReport][Belchertown][Units][Groups]"
-	    /init/weewx_config_api.py set-value "[StdReport][Belchertown][Units][Groups]" "group_pressure" "$WEEWX_PRESSURE_UNIT"
-	    fi
-
-}
-
 # Map language code to proper locale string for Belchertown
 get_belchertown_locale() {
     case "${WEEWX_LANGUAGE:-en}" in
@@ -167,7 +154,6 @@ configure_default_skin
 configure_belchertown_options
 configure_belchertown_locale
 configure_belchertown_timezone
-configure_belchertown_pressure_override
 
 # Validate final configuration
 log_info "Validating final configuration..."
